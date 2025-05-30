@@ -1,8 +1,13 @@
-import logo from './logo.svg';
+import { useEffect, useState } from 'react';
 import './App.css';
 
 function App() {
+  const [peliculas,setPeliculas] = useState([]);
+  const [buscarpe,setBuscarpe] = useState('');
+  const [filtrarpeli,setFiltrarpeli] = useState([]);
 
+
+//---------------------------------------------------------------------Consumiendo API--------------------------------------------------------------
   const options = {
     method: 'GET',
     headers: {
@@ -11,14 +16,32 @@ function App() {
     }
   };
 
-fetch('https://api.themoviedb.org/3/movie/now_playing?api_key=TU_API_KEY&language=es-ES&page=1', options)
-  .then(res => res.json())
-  .then(res => console.log(res.results))
-  .catch(err => console.error(err));
-  
-  return (
+  useEffect(() =>{
+    fetch('https://api.themoviedb.org/3/movie/now_playing?api_key=TU_API_KEY&language=es-ES&page=1', options)
+    .then(res => res.json())
+    .then(res => {
+      setPeliculas(res.results);
+      setFiltrarpeli(res.results);
+    })
+    .catch(err => console.error(err));
+  },[]);  
+//---------------------------------------------------------------------------------------------------------------------------------------------------
+
+return (
     <div className="App">
-      
+{/*----------------------Header-----------------------*/}
+      <div className='header'>
+        <h1 className='tituloheader'>Peliculas</h1>
+        <input 
+          className='busc'
+          type='text'
+          placeholder='Buscar pelicula...'
+        />
+      </div>
+{/*-----------------------Body-----------------------*/}
+      <div className='body'>
+        
+      </div>
     </div>
   );
 }
