@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import Peliculas from './Componentes/Peliculas';
 import './App.css';
 
 function App() {
@@ -20,6 +21,8 @@ function App() {
     fetch('https://api.themoviedb.org/3/movie/now_playing?api_key=TU_API_KEY&language=es-ES&page=1', options)
     .then(res => res.json())
     .then(res => {
+      console.log(res.results);
+      
       setPeliculas(res.results);
       setFiltrarpeli(res.results);
     })
@@ -40,6 +43,12 @@ return (
       </div>
 {/*-----------------------Body-----------------------*/}
       <div className='body'>
+        <div className='bodycard'>
+          {peliculas.map( peli =>(
+            <Peliculas key={peli.id} pelicul={peli}></Peliculas>
+          ))}
+          
+        </div>
         
       </div>
     </div>
