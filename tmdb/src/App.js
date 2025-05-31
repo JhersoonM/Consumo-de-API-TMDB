@@ -11,7 +11,8 @@ function App() {
   const [pgactual,setpgactual] = useState(1); 
   const contador = 5;//indicador de cuantos elementos quieres mostrar por pantalla
 
-
+  //Manejo de errores
+  const [error, setError] = useState(null);
 //---------------------------------------------------------------------Consumiendo API--------------------------------------------------------------
   const options = {
     method: 'GET',
@@ -20,18 +21,24 @@ function App() {
       Authorization: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI5ZTAwNTU1ODUzOGM2ODgwMTQ5NDZkMDJmZmZmODEyMiIsIm5iZiI6MTc0ODYzNDczMS4yNTksInN1YiI6IjY4M2EwYzZiZTVlNzFhZjc2ZTA4MGJiOSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.EqeXPEedKLylB1u_J-ZinWfyMso_oTe_HA056EQOeD0'
     }
   };
+  useEffect(() => {
+  const fetchPeliculas = async () => {
+    try {
 
-  useEffect(() =>{
-    fetch('https://api.themoviedb.org/3/movie/now_playing?api_key=TU_API_KEY&language=es-ES&page=1', options)
-    .then(res => res.json())
-    .then(res => {
-      console.log(res.results);
-      
-      setPeliculas(res.results);
-      setFiltrarpeli(res.results);
-    })
-    .catch(err => console.error(err));
-  },[]);  
+      const res = await fetch('https://api.themoviedb.org/3/movie/now_playing?language=es-ES&page=1', options);
+      if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
+      const data = await res.json();
+      setPeliculas(data.results);
+      setFiltrarpeli(data.results);
+      setError(null);
+
+    } catch (err) {
+        console.error('Error al cargar películas:', err);
+        setError('No se pudieron cargar las películas. Intenta más tarde.');
+    }
+  };
+  fetchPeliculas();
+}, []);
 //-------------------------------------------------------------useEffect para buscar peliculas-------------------------------------------------------
 useEffect(()=>{
   const resultado = peliculas.filter( p =>
@@ -72,6 +79,7 @@ return (
 {/*-----------------------Body-----------------------*/}
       <div className='body'>
         <div className='bodycard'>
+          {error && <div className="error">{error}</div>}
           {indactu.map( peli =>( //hace un recorrido del array y las muestra de 5 en 5
             <Peliculas key={peli.id} pelicul={peli}></Peliculas>
           ))}

@@ -5,6 +5,11 @@
   flex-direction: column;
   min-height: 100hv;
 }
+.error {
+  color: red;
+  margin: 1rem;
+  text-align: center;
+}
 /*---------------------------------Header---------------------------*/
 .header{
   background-color:rgb(43, 48, 58);
