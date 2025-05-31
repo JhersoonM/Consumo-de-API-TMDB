@@ -7,8 +7,9 @@ function App() {
   const [buscarpe,setBuscarpe] = useState(''); //variable donde guardo la informacion del buscador
   const [filtrarpeli,setFiltrarpeli] = useState([]); //variable donde filtro el JSON con la variable para buscar
 
-  const [pgactual,setpgactual] = useState(1);
-  const contador = 5;
+  //Variables para poder filtrar el numero de elementos mostrados
+  const [pgactual,setpgactual] = useState(1); 
+  const contador = 5;//indicador de cuantos elementos quieres mostrar por pantalla
 
 
 //---------------------------------------------------------------------Consumiendo API--------------------------------------------------------------
@@ -56,11 +57,14 @@ return (
     <div className="App">
 {/*----------------------Header-----------------------*/}
       <div className='header'>
-        <h1 className='tituloheader'>Peliculas</h1>
+        <h1 
+          className='tituloheader'
+          onClick={()=>window.location.reload()}
+          >Peliculas TMDB</h1>
         <input 
           className='busc'
           type='text'
-          placeholder='Buscar pelicula...'
+          placeholder='    Buscar pelicula...'
           value={buscarpe}
           onChange={e => setBuscarpe(e.target.value)}
         />
@@ -68,15 +72,15 @@ return (
 {/*-----------------------Body-----------------------*/}
       <div className='body'>
         <div className='bodycard'>
-          {indactu.map( peli =>(
+          {indactu.map( peli =>( //hace un recorrido del array y las muestra de 5 en 5
             <Peliculas key={peli.id} pelicul={peli}></Peliculas>
           ))}
-          
         </div>
+{/*-------------------Botones para avanzar------------------------*/}        
         <div className='btnpag'>
-          <button className='btnbtn' onClick={irant} disabled={pgactual === 1}>anterior</button>
+          <button className='btnbtn' onClick={irant} disabled={pgactual === 1}>&lt;</button>
           <span>{pgactual} de {totalpag}</span>
-          <button className='btnbtn' onClick={irsig} disabled={pgactual === totalpag}>Siguiente</button>
+          <button className='btnbtn' onClick={irsig} disabled={pgactual === totalpag}>&gt;</button>
         </div>
       </div>
     </div>
